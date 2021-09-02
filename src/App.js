@@ -29,26 +29,21 @@ function App() {
       text,
       checked: false,
     };
-    setTodos(todos.concat(todo));
+    setTodos(prevTodos => prevTodos.concat(todo));//함수형 업데이트를 사용하면
+    //이제 useCallback 함수 두번째 파라미터에서 todos가 바뀌는지 확인해줄 필요없다.
+    //todos가 바뀔때마다 함수가 새로만들어지는것을 막음.
     nextId.current +=1;
-  },[todos],);
+  },[],);
 
   const onRemove = useCallback((id) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodos);
-  },[todos]);
+    setTodos(prevTodos => prevTodos.filter((todo) => todo.id !== id));
+  },[]);
 
   const onTogle = useCallback((id) => {
-    const newTodos = todos.map((todo) => {
-      if(todo.id !== id){
-        return todo;
-      } else{
-        todo.checked=!todo.checked;
-        return todo;
-      }   
-      })
-      setTodos(newTodos);
-  },[todos])
+      setTodos(prevTodos => prevTodos.map((todo) => 
+        todo.id === id ? {...todo, checked:!todo.checked} : todo,
+      ));
+  },[])
 
   return (
     <ToDoTemplate>

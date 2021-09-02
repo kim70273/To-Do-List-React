@@ -7,7 +7,7 @@ import {
 import './ToDoListItem.css';
 import cn from 'classnames';
 
-const ToDoListItem = ({todo,onRemove, onTogle}) => {
+const ToDoListItem = ({todo,onRemove, onTogle, style}) => {
     const {text, checked} = todo;
 
     const onClick = () => {
@@ -15,6 +15,7 @@ const ToDoListItem = ({todo,onRemove, onTogle}) => {
     }
     
     return (
+        <div className="ToDoListItem-virtualized" style={style}>
         <div className="ToDoListItem">
             <div className="checkbox" onClick={() => onTogle(todo.id)}>
                 {checked ? <MdCheckBox className="checkIcon"/> : <MdCheckBoxOutlineBlank className="checkIcon"/>}
@@ -25,7 +26,8 @@ const ToDoListItem = ({todo,onRemove, onTogle}) => {
             </div>
 
         </div>
+        </div>
     )
 }
 
-export default ToDoListItem;
+export default React.memo(ToDoListItem);
